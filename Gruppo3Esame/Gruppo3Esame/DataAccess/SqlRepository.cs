@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Gruppo3Esame.DataAccess
 {
-    public class AppDbContext : IdentityDbContext
+    public class SqlRepository : IdentityDbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
+        public SqlRepository(DbContextOptions<SqlRepository> options)
             : base(options)
         { }
     }

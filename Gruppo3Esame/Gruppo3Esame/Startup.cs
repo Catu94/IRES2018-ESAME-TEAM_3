@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gruppo3Esame.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,33 +28,29 @@ namespace Gruppo3Esame
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<AppDbContext>(options =>
-             options.UseSqlServer(Configuration.GetConnectionString("connection-string")));
+            services.AddDbContext<SqlRepository>(options =>
+              options.UseSqlServer(Configuration["connection-string"]));
 
-            // With AddIdentity I configure the Authentication Service
+            services.AddScoped<IRepository<Employee>, SqlRepository>();
+            services.AddScoped<IRepository<Project>, SqlRepository>();
+
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
-                // I can set different options about authentication constraints:
                 options.User.RequireUniqueEmail = true;
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = 8;
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             })
-                // I indicate how I store authentication info for UserManagers and SignInManagers:
-                .AddEntityFrameworkStores<AppDbContext>()
+                .AddEntityFrameworkStores<SqlRepository>()
                 .AddDefaultTokenProviders();
 
-            // I configure Authentication through Cookies (We could have used JWT instead)
             services.ConfigureApplicationCookie(options =>
             {
-                // This is the redirection URL the system points to
-                // when an unauthenticated call is made to actions that require authentication.
                 options.LoginPath = "/authentication/login";
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -72,7 +70,7 @@ namespace Gruppo3Esame
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Authentication}/{action=Login}/{id?}");
             });
         }
     }
