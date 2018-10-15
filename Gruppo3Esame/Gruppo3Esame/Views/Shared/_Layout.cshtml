@@ -30,15 +30,19 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Authentication" asp-action="Login">Login</a></li>
+                    <li><a asp-area="" asp-controller="Authentication" asp-action="Registration">Registration</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Index</a></li>
+                    @if ((bool)TempData.Peek("Authenticated") == true)
+                    {
+                        <li style="position:absolute; right:10%">
+                                <a  asp-controller="Authentication" asp-action="Logout">Logout</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
     </nav>
-
-    <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
         @RenderBody()

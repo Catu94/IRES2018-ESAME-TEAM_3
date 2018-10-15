@@ -23,8 +23,48 @@ namespace Gruppo3Esame.Controllers
         }
 
         [HttpGet]
+        public IActionResult Registration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Registration(Registration viewModel)
+        {
+            if (viewModel == null)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            var user = await _userManager.FindByEmailAsync(viewModel.Email);
+            if (user == null)
+            {
+                var newUser = new IdentityUser
+                {
+                    UserName = viewModel.Name,
+                    Email = viewModel.Email,
+                };
+
+                var result = await _userManager.CreateAsync(newUser, viewModel.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("login", "Authentication");
+                }
+                else
+                {
+                    return new JsonResult(result.Errors);
+                }
+            }
+
+            ModelState.AddModelError("", "User already exists!");
+            return View(viewModel);
+        }
+
+        [HttpGet]
         public IActionResult Login()
         {
+            TempData["Authenticated"] = false;
             return View();
         }
 
@@ -37,8 +77,6 @@ namespace Gruppo3Esame.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            // The UserManager purpose is to handle users,
-            // creating them, retrieving them, checking/changing passwords, etc.
             var user = await _userManager.FindByEmailAsync(viewModel.Email);
             if (user != null)
             {
@@ -46,9 +84,8 @@ namespace Gruppo3Esame.Controllers
 
                 if (checkPwd)
                 {
-                    // The SignInManager just signs users in and out
-                    // and keeps track of the logged users.
                     await _signInManager.SignInAsync(user, false);
+                    TempData["Authenticated"] = true;
                     return RedirectToAction("index", "home");
                 }
             }
@@ -56,37 +93,14 @@ namespace Gruppo3Esame.Controllers
             ModelState.AddModelError("", "Invalid email and/or password!");
             return View(viewModel);
         }
-
-        [HttpPost]
-        [Authorize] // an action with this attribute is accessible only by authenticated users.
+     
+        [Authorize] 
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            TempData["Authenticated"] = false;
             return RedirectToAction("login");
         }
-
-        // This is just a method to create a default user, so we can test authentication.
-        // NEVER do this in a normal project.
-        // Or you have a page to create a user, or you have the list of users
-        // loaded in the startup from some source.
-        [HttpGet]
-        public async Task<IActionResult> CreateUser()
-        {
-            var user = new IdentityUser
-            {
-                UserName = "default.user",
-                Email = "q@w.e",
-            };
-
-            var result = await _userManager.CreateAsync(user, "qweqwe");
-            if (result.Succeeded)
-            {
-                return RedirectToAction("login", "authentication");
-            }
-            else
-            {
-                return new JsonResult(result.Errors);
-            }
-        }
+       
     }
 }
