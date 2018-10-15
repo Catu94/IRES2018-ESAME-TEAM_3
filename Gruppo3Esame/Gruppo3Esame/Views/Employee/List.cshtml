@@ -1,0 +1,47 @@
+﻿@model IEnumerable<EmployeeRowModel>
+
+<h2>Index</h2>
+
+<div class="text-right">
+    <a asp-controller="Employee" asp-action="Edit" class="btn btn-primary">New Employee</a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
+</div>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Surname
+                </th>
+                <th>
+                    Open Projects
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                       @Html.DisplayFor(modelItem => item.OpenProject)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

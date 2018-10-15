@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ProjectRowModel>
+
+<h2>Index</h2>
+
+<div class="text-right">
+    <a asp-controller="Project" asp-action="Edit" class="btn btn-primary">New Project</a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
+</div>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Total Cost
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Key)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td>
+                        Costo Totale
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

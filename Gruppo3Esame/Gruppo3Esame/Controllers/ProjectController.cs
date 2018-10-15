@@ -25,16 +25,13 @@ namespace Gruppo3Esame.Controllers
         {
             var models = _repository.GetAll();
 
-            var sumtry = models[0].PE.Where(p => p.ProjectId == models[0].Id);
-
             var vmp = models
                 .Select(x => new ProjectRowModel 
                 {
+                    Id = x.Id,
                     Key = x.Key,
                     Category = x.Category,
-                    //TotalCost = x.PE.Where(p => p.ProjectId == x.Id)
-                    //                .Where(e => e.EmployeeId == e.Employee.Id)
-                    //                .Aggregate(0, s => s + ,
+                    TotalCost = 0,
                 });
 
             return View(vmp);
