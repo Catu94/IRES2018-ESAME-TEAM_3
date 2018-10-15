@@ -33,6 +33,5 @@ namespace Gruppo3Esame.Controllers
         {
             return View();
         }
-
     }
 }

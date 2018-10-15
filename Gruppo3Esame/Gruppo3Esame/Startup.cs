@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,18 +21,35 @@ namespace Gruppo3Esame
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<AppDbContext>(options =>
+             options.UseSqlServer(Configuration.GetConnectionString("connection-string")));
+
+            // With AddIdentity I configure the Authentication Service
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                // I can set different options about authentication constraints:
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            })
+                // I indicate how I store authentication info for UserManagers and SignInManagers:
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            // I configure Authentication through Cookies (We could have used JWT instead)
+            services.ConfigureApplicationCookie(options =>
+            {
+                // This is the redirection URL the system points to
+                // when an unauthenticated call is made to actions that require authentication.
+                options.LoginPath = "/authentication/login";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +65,8 @@ namespace Gruppo3Esame
             }
 
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
