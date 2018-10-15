@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Gruppo3Esame.Models
 {
@@ -9,10 +7,21 @@ namespace Gruppo3Esame.Models
     {
         public int Id { get; set; }
 
-        public string Nome { get; set; }
-        public string Cognome { get; set; }
+        [Required(ErrorMessage = "Employee must have a name")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Employee must have a lastName")]
+        public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Employee must have a birthday")]
         public DateTime BirthDay { get; set; }
+
+        [Required(ErrorMessage = "Employee must have a NIN")]
+        [MinLength(16)]
+        [MaxLength(16)]
         public string NIN { get; set; }
+
+        [Required(ErrorMessage = "Employee must have a daily salary")]
         public double DailyCost { get; set; }
 
        
