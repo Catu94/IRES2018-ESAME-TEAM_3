@@ -1,4 +1,6 @@
-﻿namespace Gruppo3Esame.Models
+﻿using Gruppo3Esame.Models;
+
+namespace Gruppo3Esame.Temp
 {
     public class ProjectEmployee
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Gruppo3Esame.Models
@@ -24,6 +25,6 @@ namespace Gruppo3Esame.Models
         [Required(ErrorMessage = "Employee must have a daily salary")]
         public double DailyCost { get; set; }
 
-       
+        ICollection<Project> Projects { get; set; }
     }
 }

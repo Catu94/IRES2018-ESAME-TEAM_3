@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gruppo3Esame.Models
 {
@@ -27,5 +25,6 @@ namespace Gruppo3Esame.Models
         [Required(ErrorMessage = "EndDate is required")]
         public DateTime EndDate { get; set; }
 
+        ICollection<Employee> Employees { get; set; }
     }
 }
