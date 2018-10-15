@@ -30,9 +30,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Authentication" asp-action="Login">Login</a></li>
-                    <li><a asp-area="" asp-controller="Authentication" asp-action="Registration">Registration</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Index</a></li>
+                    <li><a asp-area="" asp-controller="Project" asp-action="List">Projects</a></li>
+                    <li><a asp-area="" asp-controller="Employee" asp-action="List">Employee</a></li>
                     @if ((bool)TempData.Peek("Authenticated") == true)
                     {
                         <li style="position:absolute; right:10%">
