@@ -1,35 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Gruppo3Esame.Models;
+using Gruppo3Esame.DataAccess;
+using System.Linq;
 
 namespace Gruppo3Esame.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IRepository<Employee> _employeeRepository;
+        private readonly IRepository<Project> _projectRepository;
+
+        public HomeController(IRepository<Employee> employeeRepository, IRepository<Project> projectRepository)
+        {
+            _employeeRepository = employeeRepository;
+            _projectRepository = projectRepository;
+        }
+
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
         {
             return View();
         }

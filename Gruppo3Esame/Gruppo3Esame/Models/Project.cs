@@ -25,6 +25,6 @@ namespace Gruppo3Esame.Models
         [Required(ErrorMessage = "EndDate is required")]
         public DateTime EndDate { get; set; }
 
-        ICollection<Employee> Employees { get; set; }
+        public ICollection<ProjectEmployee> PE { get; set; }
     }
 }

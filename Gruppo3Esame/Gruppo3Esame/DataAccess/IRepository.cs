@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Gruppo3Esame.DataAccess
 {
-    interface IRepository<T>
+    public interface IRepository<T>
     {
        
             List<T> GetAll();

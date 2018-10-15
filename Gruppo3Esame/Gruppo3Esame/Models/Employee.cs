@@ -25,6 +25,6 @@ namespace Gruppo3Esame.Models
         [Required(ErrorMessage = "Employee must have a daily salary")]
         public double DailyCost { get; set; }
 
-        ICollection<Project> Projects { get; set; }
+        public ICollection<ProjectEmployee> PE { get; set; }
     }
 }
